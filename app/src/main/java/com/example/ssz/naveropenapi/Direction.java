@@ -5,6 +5,8 @@ import com.naver.maps.geometry.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,7 +16,7 @@ import java.util.Vector;
 
 public class Direction {
 
-    public static Vector<LatLng> getWaypoint(Vector<LatLng> location) {
+    public static ArrayList<LatLng> getWaypoint(ArrayList<LatLng> location) {
         String DIRECTION_API_URI = "https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving" +
                 getAPIParameter(location);
 
@@ -26,7 +28,7 @@ public class Direction {
         return parseData(responseBody);
     }
 
-    private static String getAPIParameter(Vector<LatLng> location) {
+    private static String getAPIParameter(ArrayList<LatLng> location) {
         String startCoordinate = getStartCoordinate(location.get(0));
         String waypointCoordinate = getWaypointCoordinate(location);
         String goalCoordinate = getGoalCoordinate(location.get(location.size()-1));
@@ -38,7 +40,7 @@ public class Direction {
         return "?start=" + startLocation.latitude + "," + startLocation.longitude;
     }
 
-    private static String getWaypointCoordinate(Vector<LatLng> location) {
+    private static String getWaypointCoordinate(ArrayList<LatLng> location) {
         String waypoint = "";
         for (int i = 1; i < location.size()-1; i++) {
             if (i == 1) waypoint = "&waypoints=";
@@ -51,7 +53,7 @@ public class Direction {
         return "&goal=" + goalLocation.latitude + "," + goalLocation.longitude;
     }
 
-    private static Vector<LatLng> parseData(String responseBody) {
+    private static ArrayList<LatLng> parseData(String responseBody) {
         try {
             JSONObject jsonObject = new JSONObject(responseBody.toString());
 
@@ -59,7 +61,7 @@ public class Direction {
             JSONArray traoptimal = route.getJSONArray("traoptimal");
             JSONArray path = traoptimal.getJSONObject(0).getJSONArray("path");
 
-            Vector<LatLng> resultRoute = new Vector<>();
+            ArrayList<LatLng> resultRoute = new ArrayList<>();
             HashSet<LatLng> set = new HashSet<>();
             for (int i = 0; i < path.length(); i++) {
                 StringTokenizer st = new StringTokenizer(path.get(i).toString(), "[,]");

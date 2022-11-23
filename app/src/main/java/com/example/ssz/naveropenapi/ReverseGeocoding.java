@@ -34,6 +34,7 @@ public class ReverseGeocoding {
             setRoadAddress(results);
         } catch (JSONException e) {
             e.printStackTrace();
+            roadAddress = null;
         }
     }
 
