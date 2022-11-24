@@ -58,7 +58,7 @@ public class DBConnect {
     }
 
     public static void readComment(DBStringCallback dbStringCallback, int routeId) {
-        db.collection("route").document("route_id" + routeId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        db.collection("route").document("route" + routeId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 dbStringCallback.onCallback(documentSnapshot.get("comment").toString());

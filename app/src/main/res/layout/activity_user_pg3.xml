@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".user_pg3">
+    tools:context=".test.UserPage3">
 
     <!-- 네이버 지도 -->
     <com.naver.maps.map.MapView
@@ -36,8 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="다음"
-
+            android:text="comment 보기"
+            android:backgroundTint="#9575CD"
             tools:layout_editor_absoluteX="119dp"
             tools:layout_editor_absoluteY="653dp" />
 

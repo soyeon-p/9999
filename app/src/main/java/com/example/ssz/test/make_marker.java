@@ -42,6 +42,7 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
     private ArrayList<LatLng> clickMarker;
     private MapView mapView;
     private Set<LatLng> clickMarkerTest;
+    private ArrayList<String> cameraLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
         mapView = (MapView) findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        cameraLocation.add(getIntent().getStringExtra("address"));
 
         createRouteBtn = findViewById(R.id.route_view);
         createRouteBtn.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +74,7 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void initialize() {
+        cameraLocation = new ArrayList<>();
         clickMarkerTest = new HashSet<>();
         location = new ArrayList<>();
         clickMarker = new ArrayList<>();
@@ -95,14 +99,13 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
 
     private void setLocation() {
         new Thread(() -> {
-            ArrayList<String> cameraLocation = new ArrayList<>();
             //cameraLocation.add("인천 미추홀구 인하로 53");
+            cameraLocation.add("인천 남구 경인남길30번길 61");
             cameraLocation.add("서울 중구 세종대로110");
-            cameraLocation.add("서울 중구 세종대로40");
+            //cameraLocation.add("서울 중구 세종대로40");
             for (int i = 0; i < cameraLocation.size(); i++) {
                 LatLng locationCoordinate = Geocoding.convertAddressToCoordinate(cameraLocation.get(i));
                 if (locationCoordinate != null) {
-                    System.out.println("+++ adrress : " + locationCoordinate);
                     location.add(locationCoordinate);
                 }
             }

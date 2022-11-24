@@ -71,18 +71,18 @@ public class Home extends AppCompatActivity {
         c_route.setOnClickListener(new View.OnClickListener() { //사진찍는곳으로 이동
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Home.this, com.example.ssz.test.ImageView.class);
-                startActivity(intent);
+/*                Intent intent = new Intent(Home.this, com.example.ssz.test.ImageView.class);
+                startActivity(intent);*/
 
                 //권한 체크
-                /*TedPermission.with(getApplicationContext())
+                TedPermission.with(getApplicationContext())
                         .setPermissionListener(permissionListener)
                         .setRationaleMessage("카메라 권한이 필요합니다.")
                         .setDeniedMessage("거부하셨습니다.")
                         .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                        .check();*/
+                        .check();
 
-                /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if(intent.resolveActivity(getPackageManager())!= null){
                     File photoFile = null;
                     try{
@@ -96,7 +96,7 @@ public class Home extends AppCompatActivity {
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
                     }
-                }*/
+                }
             }
         });
     }
@@ -136,6 +136,7 @@ public class Home extends AppCompatActivity {
                                         for (Text.TextBlock block : visionText.getTextBlocks()) {
                                             String targetBlock = block.getText();
                                             int checkBit = -1;
+                                            int checkspc = 0;
                                             for(int i = 0;i<city.length;i++){
                                                 checkBit = targetBlock.indexOf(city[i]);
                                                 if(checkBit != -1){
@@ -144,9 +145,13 @@ public class Home extends AppCompatActivity {
                                             }
                                             if(checkBit != -1){
                                                 for(;checkBit < targetBlock.length();checkBit++){
+                                                    if (checkspc > 3) break;
                                                     char tmp = targetBlock.charAt(checkBit);
                                                     if(tmp == ' ' || tmp == '-' || tmp == '(' || tmp == ')'){
                                                         text += targetBlock.charAt(checkBit);
+                                                        if (tmp == ' ') {
+                                                            checkspc++;
+                                                        }
                                                     }
                                                     else if((tmp >= 33 && tmp <= 47) || (tmp >= 58 && tmp <= 64)
                                                             || (tmp >= 91 && tmp <= 96) || (tmp >= 123 && tmp <= 126)) {
@@ -158,20 +163,15 @@ public class Home extends AppCompatActivity {
                                                 }
                                                 break;
                                             }
-                                            else{
-                                                text = "정확한 주소를 입력해주세요.";
-                                            }
                                         }
 
-                                        TextView target = (TextView)findViewById(R.id.target);
-                                        target.setText(text);
-
-                                        locationUsingCamera.add(text);
+                                        //locationUsingCamera.add(text);
 
                                         //intent로 주소값 전달
 
-                                        //Intent intent = new Intent(MainActivity.this,SubActivity.class);
-                                        //intent.putExtra("address",text);
+                                        Intent intent = new Intent(getApplicationContext(),make_marker.class);
+                                        intent.putExtra("address",text);
+                                        startActivity(intent);
                                         //startActivityForResult(intent);
                                     }
                                 })
@@ -197,7 +197,6 @@ public class Home extends AppCompatActivity {
             }else{
                 exifDegree = 0;
             }
-            ((ImageView)findViewById(R.id.iv_result)).setImageBitmap(rotate(bitmap,exifDegree));
         }
     }
 
@@ -223,13 +222,13 @@ public class Home extends AppCompatActivity {
     PermissionListener permissionListener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
-            Toast.makeText(getApplicationContext(),"권한이 허용됨",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"권한이 허용됨",Toast.LENGTH_SHORT).show();
 
         }
 
         @Override
         public void onPermissionDenied(List<String> deniedPermissions) {
-            Toast.makeText(getApplicationContext(),"권한이 거부됨",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"권한이 거부됨",Toast.LENGTH_SHORT).show();
         }
     };
 }
