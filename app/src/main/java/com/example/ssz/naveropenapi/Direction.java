@@ -20,6 +20,8 @@ public class Direction {
         String DIRECTION_API_URI = "https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving" +
                 getAPIParameter(location);
 
+        System.out.println(getAPIParameter(location));
+
         Map<String, String> requestHeader = new HashMap<>();
         requestHeader.put("X-NCP-APIGW-API-KEY-ID", ApiSecretKey.X_NCP_APIGW_API_KEY_ID);
         requestHeader.put("X-NCP-APIGW-API-KEY", ApiSecretKey.X_NCP_APIGW_API_KEY);
@@ -37,25 +39,27 @@ public class Direction {
     }
 
     private static String getStartCoordinate(LatLng startLocation) {
-        return "?start=" + startLocation.latitude + "," + startLocation.longitude;
+        return "?start=" + startLocation.longitude + "," + startLocation.latitude;
     }
 
     private static String getWaypointCoordinate(ArrayList<LatLng> location) {
         String waypoint = "";
         for (int i = 1; i < location.size()-1; i++) {
             if (i == 1) waypoint = "&waypoints=";
-            waypoint += location.get(i).latitude + "," + location.get(i).longitude + "|";
+            waypoint += location.get(i).longitude + "," + location.get(i).latitude + "|";
         }
         return waypoint;
     }
 
     private static String getGoalCoordinate(LatLng goalLocation) {
-        return "&goal=" + goalLocation.latitude + "," + goalLocation.longitude;
+        return "&goal=" + goalLocation.longitude + "," + goalLocation.latitude;
     }
 
     private static ArrayList<LatLng> parseData(String responseBody) {
         try {
             JSONObject jsonObject = new JSONObject(responseBody.toString());
+
+            System.out.println("+++" + jsonObject);
 
             JSONObject route = jsonObject.getJSONObject("route");
             JSONArray traoptimal = route.getJSONArray("traoptimal");

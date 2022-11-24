@@ -19,6 +19,7 @@ import com.example.ssz.naveropenapi.Direction;
 import com.example.ssz.naveropenapi.Geocoding;
 import com.example.ssz.naveropenapi.ReverseGeocoding;
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapSdk;
@@ -29,16 +30,18 @@ import com.naver.maps.map.overlay.PathOverlay;
 import com.naver.maps.map.util.MarkerIcons;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 public class make_marker extends AppCompatActivity implements OnMapReadyCallback {
     private Button createRouteBtn;
     private static NaverMap naverMap;
     private ArrayList<LatLng> location;
-    private Vector<Marker> marker;
-    private int[] markerColor;
-    private PathOverlay pathOverlay;
+    private ArrayList<LatLng> clickMarker;
     private MapView mapView;
+    private Set<LatLng> clickMarkerTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 RouteDTO routeDTO = new RouteDTO();
-                routeDTO.setLocation(location);
+                routeDTO.setLocation(clickMarker);
 
                 DBConnect.saveRoute(routeDTO);
 
@@ -68,77 +71,78 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void initialize() {
+        clickMarkerTest = new HashSet<>();
         location = new ArrayList<>();
-        marker = new Vector<>();
-        pathOverlay = new PathOverlay();
-        markerColor = new int[7];
-        markerColor[0] = Color.rgb(255, 0, 0);
-        markerColor[1] = Color.rgb(255, 204, 0);
-        markerColor[2] = Color.rgb(255, 255, 0);
-        markerColor[3] = Color.rgb(0, 255, 0);
-        markerColor[4] = Color.rgb(0, 0, 255);
-        markerColor[5] = Color.rgb(0, 0, 102);
-        markerColor[6] = Color.rgb(100, 0, 255);
+        clickMarker = new ArrayList<>();
+
+        setLocation();
     }
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         setNaverMap(naverMap);
-        setClickListenerWhenCLickSymbolInNaverMap();
+        setMarker();
     }
 
     private void setNaverMap(NaverMap naverMap) {
         this.naverMap = naverMap;
+
         //배경 지도 선택
         naverMap.setMapType(NaverMap.MapType.Navi);
         // 건물 표시
         naverMap.setLayerGroupEnabled(naverMap.LAYER_GROUP_BUILDING, true);
     }
 
-    private void clickMarker() {
-
-    }
-
-    private void setClickListenerWhenCLickSymbolInNaverMap() {
-        naverMap.setOnSymbolClickListener(symbol -> {
-            Marker marker = new Marker();
-            marker.setPosition(symbol.getPosition());
-            setClickMarkerListener(marker);
-            new Thread(() -> {
-                ReverseGeocoding.convertCoordinateToAddress(symbol.getPosition());
-                String roadAddress = ReverseGeocoding.getRoadAddress();
-                LatLng locationCoordinate = null;
-                if (roadAddress != null) {
-                    locationCoordinate = Geocoding.convertAddressToCoordinate(roadAddress);
-                    if (locationCoordinate != null) {
-                        this.location.add(locationCoordinate);
-                        this.marker.add(marker);
-                    } else {
-                        runOnUiThread(() -> {
-                            Toast.makeText(getApplication(), "선택할 수 없는 지역입니다.", Toast.LENGTH_SHORT).show();
-                            marker.setMap(null);
-                        });
-                    }
-                } else {
-                    runOnUiThread(() -> {
-                        Toast.makeText(getApplication(), "선택할 수 없는 지역입니다.", Toast.LENGTH_SHORT).show();
-                        marker.setMap(null);
-                    });
+    private void setLocation() {
+        new Thread(() -> {
+            ArrayList<String> cameraLocation = new ArrayList<>();
+            //cameraLocation.add("인천 미추홀구 인하로 53");
+            cameraLocation.add("서울 중구 세종대로110");
+            cameraLocation.add("서울 중구 세종대로40");
+            for (int i = 0; i < cameraLocation.size(); i++) {
+                LatLng locationCoordinate = Geocoding.convertAddressToCoordinate(cameraLocation.get(i));
+                if (locationCoordinate != null) {
+                    System.out.println("+++ adrress : " + locationCoordinate);
+                    location.add(locationCoordinate);
                 }
-            }).start();
-            marker.setMap(naverMap);
-            return true;
-        });
+            }
+        }).start();
     }
+
+    private void setMarker() {
+        for (int i = 0; i < location.size(); i++) {
+            Marker marker = new Marker();
+            setClickMarkerListener(marker);
+            marker.setPosition(new LatLng(location.get(i).longitude, location.get(i).latitude));
+            //clickMarker.add(marker.getPosition());
+            marker.setMap(naverMap);
+        }
+    }
+
+
 
     // 마커 클릭 시 색 변경.
     private void setClickMarkerListener(Marker marker) {
         marker.setOnClickListener(new Overlay.OnClickListener() {
             @Override
             public boolean onClick(@NonNull Overlay overlay) {
-                marker.setIcon(MarkerIcons.BLACK);
-                marker.setIconTintColor(markerColor[location.size()]);
-                Toast.makeText(getApplication(), "click marker", Toast.LENGTH_SHORT).show();
+                if (!clickMarkerTest.contains(marker.getPosition())) {
+                    clickMarkerTest.add(marker.getPosition());
+                    System.out.println("+++ click marker position" + marker.getPosition());
+                    clickMarker.add(new LatLng(marker.getPosition().longitude, marker.getPosition().latitude));
+                    marker.setIcon(MarkerIcons.BLACK);
+                    marker.setIconTintColor(Color.RED);
+                }
+/*                naverMap.setOnSymbolClickListener(symbol -> {
+                    if (!clickMarkerTest.contains(symbol.getPosition())) {
+                        clickMarkerTest.add(symbol.getPosition());
+                        System.out.println("+++ click marker position" + symbol.getPosition());
+                        clickMarker.add(symbol.getPosition());
+                        marker.setIcon(MarkerIcons.BLACK);
+                        marker.setIconTintColor(Color.RED);
+                    }
+                    return true;
+                });*/
                 return true;
             }
         });

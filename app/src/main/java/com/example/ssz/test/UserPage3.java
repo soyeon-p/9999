@@ -32,6 +32,7 @@ public class UserPage3 extends AppCompatActivity implements OnMapReadyCallback {
     private MapView mapView;
     private int[] routeColor;
     private ArrayList<PathOverlay> pathOverlays;
+    private static int routeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class UserPage3 extends AppCompatActivity implements OnMapReadyCallback {
         LatLng startLocation = ((AppData) (getApplication())).getStartLocation();
         DBConnect.readRoute(new DBArrayCallback() {
             @Override
-            public void onCallback(ArrayList<ArrayList<LatLng>> route) {
+            public void onCallback(ArrayList<ArrayList<LatLng>> route, int routeId) {
                 {
                     new Thread(() -> {
                         if (route.size() == 0) {
@@ -80,25 +81,31 @@ public class UserPage3 extends AppCompatActivity implements OnMapReadyCallback {
                             startActivity(intent);
                         } else {
                             for (int i = 0; i < route.size(); i++) {
+                                System.out.println("+++" + route.get(i).get(0).latitude + " vs " +
+                                        startLocation.latitude + "else\n"
+                                + route.get(i).get(0).longitude + " vs " + startLocation.longitude );
                                 if (route.get(i).get(0).latitude == startLocation.latitude &&
                                         route.get(i).get(0).longitude == startLocation.longitude) {
                                     PathOverlay pathOverlay = new PathOverlay();
                                     ArrayList<LatLng> waypoint = Direction.getWaypoint(route.get(i));
 
-                                    pathOverlay.setCoords(waypoint);
-                                    pathOverlay.setOutlineWidth(10);
-                                    pathOverlay.setColor(routeColor[i]);
-                                    pathOverlay.setOnClickListener(overlay -> {
-                                        Intent intent = new Intent(UserPage3.this, UserPage4.class);
-                                        startActivity(intent);
-                                        return true;
-                                    });
+                                    if (waypoint != null) {
+                                        pathOverlay.setCoords(waypoint);
+                                        pathOverlay.setOutlineWidth(10);
+                                        pathOverlay.setColor(routeColor[i]);
+                                        pathOverlay.setOnClickListener(overlay -> {
+                                            Intent intent = new Intent(UserPage3.this, UserPage4.class);
+                                            intent.putExtra("routeId", routeId);
+                                            startActivity(intent);
+                                            return true;
+                                        });
 
-                                    pathOverlays.add(pathOverlay);
+                                        pathOverlays.add(pathOverlay);
 
-                                    runOnUiThread(() -> {
-                                        pathOverlay.setMap(naverMap);
-                                    });
+                                        runOnUiThread(() -> {
+                                            pathOverlay.setMap(naverMap);
+                                        });
+                                    }
                                 }
                             }
                         }

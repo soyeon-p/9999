@@ -9,6 +9,15 @@ import java.util.ArrayList;
 public class AppData extends Application {
     private LatLng startLocation;
     private ArrayList<String> cameraLocation;
+    private String comment;
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getComment() {
+        return this.comment;
+    }
 
     public void setStartLocation(LatLng startLocation) {
         this.startLocation = startLocation;

@@ -69,11 +69,13 @@ public class UserPage2 extends AppCompatActivity implements OnMapReadyCallback {
             new Thread(() -> {
                 ReverseGeocoding.convertCoordinateToAddress(symbol.getPosition());
                 String roadAddress = ReverseGeocoding.getRoadAddress();
+                System.out.println("+++ roadAddress : " + roadAddress);
                 LatLng locationCoordinate = null;
                 if (roadAddress != null) {
                     locationCoordinate = Geocoding.convertAddressToCoordinate(roadAddress);
+                    ((AppData) getApplication()).setStartLocation(new LatLng(locationCoordinate.longitude, locationCoordinate.latitude));
+                    System.out.println("+++ start location" + ((AppData)getApplication()).getStartLocation());
                     if (locationCoordinate != null) {
-                        ((AppData) getApplication()).setStartLocation(locationCoordinate);
                         this.startMarker = marker;
                     } else {
                         runOnUiThread(() -> {

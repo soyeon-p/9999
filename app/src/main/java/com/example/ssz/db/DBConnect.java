@@ -6,6 +6,7 @@ import com.example.ssz.db.dto.DBRouteDTO;
 import com.example.ssz.db.dto.DBRouteLocationDTO;
 import com.example.ssz.db.dto.RouteDTO;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,6 +28,8 @@ public class DBConnect {
     private static String testUserUUID = "DIFJ092JFDS0";
     private static String testUserId = "Oia";
     private static String testUserPassword = "1234";
+    private static boolean isStart;
+    private static int routeId;
 
     public static void saveComment(String comment) {
         readRoutCnt(new DBIntCallback() {
@@ -54,17 +57,17 @@ public class DBConnect {
         });
     }
 
-    public static List<?> convertObjectToList(Object obj) {
-        List<?> list = new ArrayList<>();
-        if (obj.getClass().isArray()) {
-            list = Arrays.asList((Object[])obj);
-        } else if (obj instanceof Collection) {
-            list = new ArrayList<>((Collection<?>)obj);
-        }
-        return list;
+    public static void readComment(DBStringCallback dbStringCallback, int routeId) {
+        db.collection("route").document("route_id" + routeId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                dbStringCallback.onCallback(documentSnapshot.get("comment").toString());
+            }
+        });
     }
 
     public static void readRoute(DBArrayCallback dbArrayCallback) {
+        isStart = true;
         db.collection("route").orderBy("like_count", Query.Direction.DESCENDING).limit(3)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -72,6 +75,11 @@ public class DBConnect {
                         ArrayList<ArrayList<LatLng>> route = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                             ArrayList<LatLng> road = new ArrayList<>();
+                            if (isStart) {
+                                routeId = Integer.parseInt(documentSnapshot.get("route_id").toString());
+                                isStart = false;
+                            }
+                            documentSnapshot.get("route_id");
                             ArrayList<DBRouteLocationDTO> dbRouteLocationDTOArrayList = documentSnapshot.toObject(DBRouteDTO.class).location;
                             for (DBRouteLocationDTO dto : dbRouteLocationDTOArrayList) {
                                 LatLng location = new LatLng(dto.latitude, dto.longitude);
@@ -79,7 +87,7 @@ public class DBConnect {
                             }
                             route.add(road);
                         }
-                        dbArrayCallback.onCallback(route);
+                        dbArrayCallback.onCallback(route, routeId);
                     }
                 });
     }
