@@ -10,6 +10,15 @@ public class AppData extends Application {
     private LatLng startLocation;
     private ArrayList<String> cameraLocation;
     private String comment;
+    private int routeId;
+
+    public void setRouteId(int routeId) {
+        this.routeId = routeId;
+    }
+
+    public int getRouteId() {
+        return this.routeId;
+    }
 
     public void setComment(String comment) {
         this.comment = comment;

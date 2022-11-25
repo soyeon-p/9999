@@ -131,7 +131,7 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
             public boolean onClick(@NonNull Overlay overlay) {
                 if (!clickMarkerTest.contains(marker.getPosition())) {
                     clickMarkerTest.add(marker.getPosition());
-                    System.out.println("+++ click marker position" + marker.getPosition());
+                    //System.out.println("+++ click marker position" + marker.getPosition());
                     clickMarker.add(new LatLng(marker.getPosition().longitude, marker.getPosition().latitude));
                     marker.setIcon(MarkerIcons.BLACK);
                     marker.setIconTintColor(Color.RED);

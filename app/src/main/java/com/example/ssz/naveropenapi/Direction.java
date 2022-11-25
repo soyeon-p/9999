@@ -59,8 +59,6 @@ public class Direction {
         try {
             JSONObject jsonObject = new JSONObject(responseBody.toString());
 
-            System.out.println("+++" + jsonObject);
-
             JSONObject route = jsonObject.getJSONObject("route");
             JSONArray traoptimal = route.getJSONArray("traoptimal");
             JSONArray path = traoptimal.getJSONObject(0).getJSONArray("path");
