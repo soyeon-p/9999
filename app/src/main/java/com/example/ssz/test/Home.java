@@ -165,12 +165,28 @@ public class Home extends AppCompatActivity {
                                             }
                                         }
 
-                                        //locationUsingCamera.add(text);
 
+                                        //전체 정보 뽑기
+                                        String blockText = "";
+                                        for (Text.TextBlock block : visionText.getTextBlocks()) {
+                                            String targetBlock = block.getText();
+                                            int st_idx = targetBlock.indexOf("점");
+                                            if(st_idx <0) {
+                                                continue;
+                                            }
+                                            st_idx = targetBlock.indexOf(":") + 1;
+                                            for(;st_idx<targetBlock.length();st_idx++){
+                                                blockText += targetBlock.charAt(st_idx);
+                                            }
+                                            if(st_idx == targetBlock.length()){
+                                                break;
+                                            }
+
+                                        }
                                         //intent로 주소값 전달
-
                                         Intent intent = new Intent(getApplicationContext(),make_marker.class);
                                         intent.putExtra("address",text);
+                                        intent.putExtra("storeName",blockText);
                                         startActivity(intent);
                                         //startActivityForResult(intent);
                                     }

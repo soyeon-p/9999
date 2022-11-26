@@ -31,15 +31,6 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:gravity="center">
-        <Button
-            android:id="@+id/next2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="comment 보기"
-            android:backgroundTint="#9575CD"
-            tools:layout_editor_absoluteX="119dp"
-            tools:layout_editor_absoluteY="653dp" />
 
     </LinearLayout>
 

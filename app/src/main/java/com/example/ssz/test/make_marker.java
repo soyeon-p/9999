@@ -10,39 +10,36 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.ssz.AppData;
 import com.example.ssz.R;
 import com.example.ssz.db.DBConnect;
 import com.example.ssz.db.dto.RouteDTO;
 import com.example.ssz.naveropenapi.ApiSecretKey;
-import com.example.ssz.naveropenapi.Direction;
 import com.example.ssz.naveropenapi.Geocoding;
-import com.example.ssz.naveropenapi.ReverseGeocoding;
 import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
-import com.naver.maps.map.overlay.PathOverlay;
 import com.naver.maps.map.util.MarkerIcons;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 
 public class make_marker extends AppCompatActivity implements OnMapReadyCallback {
+    private ArrayList<String> roadAddressGetUsingCamera;
+
     private Button createRouteBtn;
     private static NaverMap naverMap;
     private ArrayList<LatLng> location;
-    private ArrayList<LatLng> clickMarker;
+    private ArrayList<LatLng> clickMarkerLocation;
+    private ArrayList<String> clickMarkerStoreName;
     private MapView mapView;
     private Set<LatLng> clickMarkerTest;
-    private ArrayList<String> cameraLocation;
+
+    private ArrayList<String> cameraStoreName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +53,16 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        cameraLocation.add(getIntent().getStringExtra("address"));
+        roadAddressGetUsingCamera.add(getIntent().getStringExtra("address"));
+        cameraStoreName.add(getIntent().getStringExtra("storeName"));
+        Toast.makeText(getApplicationContext(), cameraStoreName.get(0), Toast.LENGTH_SHORT).show();
 
         createRouteBtn = findViewById(R.id.route_view);
         createRouteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 RouteDTO routeDTO = new RouteDTO();
-                routeDTO.setLocation(clickMarker);
+                routeDTO.setLocation(clickMarkerLocation);
 
                 DBConnect.saveRoute(routeDTO);
 
@@ -74,10 +73,11 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void initialize() {
-        cameraLocation = new ArrayList<>();
+        roadAddressGetUsingCamera = new ArrayList<>();
+        cameraStoreName = new ArrayList<>();
         clickMarkerTest = new HashSet<>();
         location = new ArrayList<>();
-        clickMarker = new ArrayList<>();
+        clickMarkerLocation = new ArrayList<>();
 
         setLocation();
     }
@@ -89,6 +89,10 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void setNaverMap(NaverMap naverMap) {
+
+        //roadAddressGetUsingCamera.add("인천 남구 경인남길30번길 61");
+        //roadAddressGetUsingCamera.add(getIntent().getStringExtra("address"));
+
         this.naverMap = naverMap;
 
         //배경 지도 선택
@@ -99,12 +103,12 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
 
     private void setLocation() {
         new Thread(() -> {
-            //cameraLocation.add("인천 미추홀구 인하로 53");
-            cameraLocation.add("인천 남구 경인남길30번길 61");
-            cameraLocation.add("서울 중구 세종대로110");
-            //cameraLocation.add("서울 중구 세종대로40");
-            for (int i = 0; i < cameraLocation.size(); i++) {
-                LatLng locationCoordinate = Geocoding.convertAddressToCoordinate(cameraLocation.get(i));
+            roadAddressGetUsingCamera.add("인천 미추홀구 인하로 53");
+            roadAddressGetUsingCamera.add("인천 남구 경인남길30번길 61");
+            //roadAddressGetUsingCamera.add("서울 중구 세종대로110");
+            //roadAddressGetUsingCamera.add("서울 중구 세종대로40");
+            for (int i = 0; i < roadAddressGetUsingCamera.size(); i++) {
+                LatLng locationCoordinate = Geocoding.convertAddressToCoordinate(roadAddressGetUsingCamera.get(i));
                 if (locationCoordinate != null) {
                     location.add(locationCoordinate);
                 }
@@ -116,13 +120,11 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
         for (int i = 0; i < location.size(); i++) {
             Marker marker = new Marker();
             setClickMarkerListener(marker);
-            marker.setPosition(new LatLng(location.get(i).longitude, location.get(i).latitude));
-            //clickMarker.add(marker.getPosition());
+            LatLng markerLocation = new LatLng(location.get(i).longitude, location.get(i).latitude);
+            marker.setPosition(markerLocation);
             marker.setMap(naverMap);
         }
     }
-
-
 
     // 마커 클릭 시 색 변경.
     private void setClickMarkerListener(Marker marker) {
@@ -132,20 +134,11 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
                 if (!clickMarkerTest.contains(marker.getPosition())) {
                     clickMarkerTest.add(marker.getPosition());
                     //System.out.println("+++ click marker position" + marker.getPosition());
-                    clickMarker.add(new LatLng(marker.getPosition().longitude, marker.getPosition().latitude));
+                    clickMarkerLocation.add(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude));
+
                     marker.setIcon(MarkerIcons.BLACK);
                     marker.setIconTintColor(Color.RED);
                 }
-/*                naverMap.setOnSymbolClickListener(symbol -> {
-                    if (!clickMarkerTest.contains(symbol.getPosition())) {
-                        clickMarkerTest.add(symbol.getPosition());
-                        System.out.println("+++ click marker position" + symbol.getPosition());
-                        clickMarker.add(symbol.getPosition());
-                        marker.setIcon(MarkerIcons.BLACK);
-                        marker.setIconTintColor(Color.RED);
-                    }
-                    return true;
-                });*/
                 return true;
             }
         });

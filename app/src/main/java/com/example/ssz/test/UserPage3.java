@@ -66,15 +66,13 @@ public class UserPage3 extends AppCompatActivity implements OnMapReadyCallback {
         user_pg4.show(); //dialog 띄우기
 
         TextView comment =user_pg4.findViewById(R.id.textView5);
-        System.out.println("+++getComment" + ((AppData)getApplication()).getComment());
         comment.setText(((AppData) getApplication()).getComment());
 
         Button like = user_pg4.findViewById(R.id.like);
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(UserPage3.this, "like", Toast.LENGTH_SHORT).show();
-                tv_count = user_pg4.findViewById(R.id.tv_count);
+                    tv_count = user_pg4.findViewById(R.id.tv_count);
                 if (count == 0) {
                     count++;
                     tv_count.setText("1");

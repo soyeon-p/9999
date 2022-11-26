@@ -40,7 +40,8 @@
             android:layout_height="411dp"
             android:id="@+id/textView5"
             android:background="@drawable/comentbox"
-            android:text="TextView">
+            android:text="TextView"
+            android:textColor="@color/black">
 
         </TextView>
     </LinearLayout>
