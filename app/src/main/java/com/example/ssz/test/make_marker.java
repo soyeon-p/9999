@@ -30,12 +30,13 @@ import java.util.Set;
 
 public class make_marker extends AppCompatActivity implements OnMapReadyCallback {
     private ArrayList<String> roadAddressGetUsingCamera;
+    private ArrayList<String> storeNameGetUsingCamera;
+    private ArrayList<String> timestampGetUsingCamera;
 
     private Button createRouteBtn;
     private static NaverMap naverMap;
     private ArrayList<LatLng> location;
     private ArrayList<LatLng> clickMarkerLocation;
-    private ArrayList<String> clickMarkerStoreName;
     private MapView mapView;
     private Set<LatLng> clickMarkerTest;
 
@@ -90,9 +91,6 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
 
     private void setNaverMap(NaverMap naverMap) {
 
-        //roadAddressGetUsingCamera.add("인천 남구 경인남길30번길 61");
-        //roadAddressGetUsingCamera.add(getIntent().getStringExtra("address"));
-
         this.naverMap = naverMap;
 
         //배경 지도 선택
@@ -103,8 +101,8 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
 
     private void setLocation() {
         new Thread(() -> {
-            roadAddressGetUsingCamera.add("인천 미추홀구 인하로 53");
-            roadAddressGetUsingCamera.add("인천 남구 경인남길30번길 61");
+            //roadAddressGetUsingCamera.add("인천 미추홀구 인하로 53");
+            //roadAddressGetUsingCamera.add("인천 남구 경인남길30번길 61");
             //roadAddressGetUsingCamera.add("서울 중구 세종대로110");
             //roadAddressGetUsingCamera.add("서울 중구 세종대로40");
             for (int i = 0; i < roadAddressGetUsingCamera.size(); i++) {
