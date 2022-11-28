@@ -132,9 +132,6 @@ public class UserPage3 extends AppCompatActivity implements OnMapReadyCallback {
                                         pathOverlay.setOutlineWidth(10);
                                         pathOverlay.setColor(routeColor[i]);
                                         pathOverlay.setOnClickListener(overlay -> {
-                                            /*Intent intent = new Intent(UserPage3.this, UserPage4.class);
-                                            intent.putExtra("routeId", routeId);
-                                            startActivity(intent);*/
                                             ((AppData)getApplication()).setRouteId(routeId);
                                             DBConnect.readComment(new DBStringCallback() {
                                                 @Override

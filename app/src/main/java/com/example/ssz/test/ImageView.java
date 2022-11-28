@@ -11,8 +11,6 @@ import android.widget.Button;
 import com.example.ssz.R;
 
 public class ImageView extends AppCompatActivity {
-    //Bitmap bitmap;
-    //ImageView imageView;
     private Button btn_image;
     private Button next3;
 
@@ -29,39 +27,3 @@ public class ImageView extends AppCompatActivity {
         });
     }
 }
-
-//}
-//public void showCameraBtn(View view)
-//{
-//   Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//   activityResultPicture.launch(intent);
-//}
-
-// ActivityResultLauncher<Intent> activityResultPicture = registerForActivityResult(
-//   new ActivityResultContracts.StartActivityForResult(),
-//    new ActivityResultCallback<ActivityResult>() {
-//@Override
-// public void onActivityResult(ActivityResult result) {
-//   if(result.getResultCode() == RESULT_OK && result.getData() !=null){
-//        Bundle extras = result.getData().getExtras();
-//         bitmap = (Bitmap)extras.get("data");
-//            imageView.setImageBitmap(bitmap);
-//          }
-//        }
-//     }
-//);
-
-// protected void onCreate(Bundle savedInstanceState) {
-//   super.onCreate(savedInstanceState);
-//setContentView(R.layout.activity_imageview);
-
-//  imageView = (ImageView) findViewById(R.id.imageView);
-// useimage = findViewById(R.id.useimage);
-//useimage.setOnClickListener(new View.OnClickListener() {
-//   @Override
-//  public void onClick(View view) {
-//     Intent intent = new Intent(imageview.this,make_marker.class);
-//    startActivity(intent);
-// }
-//});
-

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.ssz.AppData;
 import com.example.ssz.R;
 import com.example.ssz.db.DBConnect;
 import com.example.ssz.db.dto.RouteDTO;
@@ -36,7 +37,7 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
     private Button createRouteBtn;
     private static NaverMap naverMap;
     private ArrayList<LatLng> location;
-    private ArrayList<LatLng> clickMarkerLocation;
+    private ArrayList<LatLng> clickMarker;
     private MapView mapView;
     private Set<LatLng> clickMarkerTest;
 
@@ -54,16 +55,12 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        roadAddressGetUsingCamera.add(getIntent().getStringExtra("address"));
-        cameraStoreName.add(getIntent().getStringExtra("storeName"));
-        Toast.makeText(getApplicationContext(), cameraStoreName.get(0), Toast.LENGTH_SHORT).show();
-
         createRouteBtn = findViewById(R.id.route_view);
         createRouteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 RouteDTO routeDTO = new RouteDTO();
-                routeDTO.setLocation(clickMarkerLocation);
+                routeDTO.setLocation(clickMarker);
 
                 DBConnect.saveRoute(routeDTO);
 
@@ -78,7 +75,12 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
         cameraStoreName = new ArrayList<>();
         clickMarkerTest = new HashSet<>();
         location = new ArrayList<>();
-        clickMarkerLocation = new ArrayList<>();
+        clickMarker = new ArrayList<>();
+
+        roadAddressGetUsingCamera = ((AppData)getApplication()).getRoadAddressGetCamera();
+        timestampGetUsingCamera = ((AppData)getApplication()).getTimestampGetCamera();
+        storeNameGetUsingCamera = ((AppData)getApplication()).getStoreNameGetCamera();
+
 
         setLocation();
     }
@@ -131,8 +133,7 @@ public class make_marker extends AppCompatActivity implements OnMapReadyCallback
             public boolean onClick(@NonNull Overlay overlay) {
                 if (!clickMarkerTest.contains(marker.getPosition())) {
                     clickMarkerTest.add(marker.getPosition());
-                    //System.out.println("+++ click marker position" + marker.getPosition());
-                    clickMarkerLocation.add(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude));
+                    clickMarker.add(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude));
 
                     marker.setIcon(MarkerIcons.BLACK);
                     marker.setIconTintColor(Color.RED);

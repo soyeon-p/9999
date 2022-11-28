@@ -23,7 +23,6 @@ public class Comment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(com.example.ssz.R.layout.activity_comment);
 
-
         EditText editText = findViewById(R.id.comment);
         Button saveRouteInfo = (Button) findViewById(R.id.c_route);
         saveRouteInfo.setOnClickListener(new View.OnClickListener() {

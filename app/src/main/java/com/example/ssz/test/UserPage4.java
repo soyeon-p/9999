@@ -21,10 +21,6 @@ public class UserPage4 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(com.example.ssz.R.layout.activity_user_pg4);
 
-        //TextView textView = findViewById(R.id.textView5);
-        //setComment();
-        //textView.setText(((AppData)getApplication()).getComment());
-
         done = findViewById(R.id.done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
