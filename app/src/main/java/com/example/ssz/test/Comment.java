@@ -10,11 +10,6 @@ import android.widget.EditText;
 
 import com.example.ssz.R;
 import com.example.ssz.db.DBConnect;
-import com.example.ssz.db.dto.RouteDTO;
-import com.google.type.LatLng;
-
-import java.util.ArrayList;
-import java.util.Vector;
 
 public class Comment extends AppCompatActivity {
 
