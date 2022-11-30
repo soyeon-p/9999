@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
-
+import com.example.ssz.db.dto.User;
 import com.example.ssz.R;
 import com.example.ssz.db.dto.UserDao;
 import com.example.ssz.db.dto.UserDatabase;

@@ -9,6 +9,9 @@
     tools:context=".makeroute">
 
     <Button
+
+        android:background="@drawable/resource"
+        android:backgroundTint="#EDE7F6"
         android:id="@+id/makeroute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

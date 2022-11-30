@@ -10,23 +10,38 @@
 
     tools:context=".test.Login">
 
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:layout_marginBottom="70dp"
+        android:fontFamily="@font/cafe24ohsquare"
         android:text="오늘의 코스"
-        android:fontFamily="@font/gang"
         android:textStyle="bold"
-        android:textSize="50dp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textColor="#ffff"
+        android:textSize="50dp" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:src="@drawable/ic_baseline_location_on_24" />
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+    />
 
     <EditText
+        android:background="@drawable/edit"
         android:id="@+id/userid"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_gravity="center"
-        android:layout_height="70dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="5dp"
         android:ems="10"
         android:hint="ID"
@@ -34,27 +49,31 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="350dp"
-        android:layout_height="70dp"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
+        android:background="@drawable/edit"
         android:ems="10"
-        android:inputType="textPassword"
-        android:hint="Password" />
+        android:hint="Password"
+        android:inputType="textPassword" />
 
     <Button
         android:layout_marginTop="150dp"
         android:id="@+id/register"
-        android:layout_width="350dp"
-        android:layout_height="40dp"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
         android:text="register"
         android:background="@drawable/resource"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:backgroundTint="#B39DD8"
+        />
 
     <Button
+        android:backgroundTint="#B39DD8"
         android:layout_marginTop="10dp"
         android:id="@+id/login"
-        android:layout_width="350dp"
-        android:layout_height="40dp"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
         android:text="Login"
         android:background="@drawable/resource"
         android:layout_gravity="center" />

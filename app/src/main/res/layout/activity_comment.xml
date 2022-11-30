@@ -5,24 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/comentbox"
     tools:context=".test.Comment">
 
 
     <EditText
+        android:background="@drawable/edit"
         android:layout_margin="30dp"
         android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="550dp"
         android:layout_weight="1"
-        android:background="@drawable/comentbox"
+
         android:ems="10"
         android:gravity="center"
 
-        android:hint="     코멘트를 입력하세요."
+        android:hint="코멘트를 입력하세요."
         android:inputType="text"
         android:textColorHint="#7E57C2"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="20dp"
+
         tools:layout_editor_absoluteY="16dp"></EditText>
 
     <LinearLayout
@@ -31,13 +34,16 @@
         android:layout_gravity="center">
 
         <Button
+            android:backgroundTint="#ffff"
             android:id="@+id/c_route"
             android:layout_width="95dp"
             android:layout_height="66dp"
             android:gravity="center"
-            android:text="저장"
+            android:text="save"
+            android:background="@drawable/but"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="147dp"
+
             tools:layout_editor_absoluteY="611dp"></Button>
 
 

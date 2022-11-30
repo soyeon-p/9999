@@ -24,12 +24,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <Button
+
             android:id="@+id/btn_capture"
-            android:layout_width="wrap_content"
+            android:layout_width="108dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="#EDE7F6"
             android:text="촬영" />
 
     </LinearLayout>
@@ -39,7 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text = "촬영 그만하기" ></Button>
+        android:backgroundTint="#EDE7F6"
+        android:text="촬영 그만하기"></Button>
 
     <TextView
         android:id="@+id/target"

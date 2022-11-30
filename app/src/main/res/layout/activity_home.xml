@@ -5,20 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:background="@drawable/gradient"
     tools:context=".test.Home">
 
     <Button
+
+        android:layout_marginRight="10dp"
         android:id="@+id/c_route"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="113dp"
         android:layout_gravity="center"
-        android:text = "create route" ></Button>
+        android:background="@drawable/resource"
+        android:backgroundTint="#EDE7F6"
+        android:text="create course"></Button>
 
     <Button
+
         android:id="@+id/u_route"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="113dp"
         android:layout_gravity="center"
-        android:text = "using   route" ></Button>
+        android:background="@drawable/resource"
+        android:backgroundTint="#EDE7F6"
+
+        android:text="using   course"></Button>
 </LinearLayout>
